@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "REC INNOVA 2K26"
+version = "1.0.0"
+id = "artifacts/rec-innova"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19392
+
+[services.development]
+run = "pnpm --filter @workspace/rec-innova run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/rec-innova", "run", "build" ]
+publicDir = "artifacts/rec-innova/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19392"
+BASE_PATH = "/"

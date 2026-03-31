@@ -1,22 +1,28 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: REC INNOVA 2K26 Cultural Fest API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: registrations
+    description: Event registrations
+  - name: announcements
+    description: Fest announcements
+  - name: events
+    description: Event information
+  - name: admin
+    description: Admin operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +30,237 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /registrations:
+    post:
+      operationId: createRegistration
+      tags: [registrations]
+      summary: Submit a new registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRegistration"
+      responses:
+        "201":
+          description: Registration created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Registration"
+        "409":
+          description: Duplicate registration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /registrations/all:
+    get:
+      operationId: getAllRegistrations
+      tags: [registrations, admin]
+      summary: Get all registrations (admin)
+      parameters:
+        - name: event
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of registrations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  registrations:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Registration"
+                  total:
+                    type: integer
+                required:
+                  - registrations
+                  - total
+
+  /registrations/stats:
+    get:
+      operationId: getRegistrationStats
+      tags: [registrations]
+      summary: Get registration statistics
+      responses:
+        "200":
+          description: Registration stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistrationStats"
+
+  /announcements:
+    get:
+      operationId: getAnnouncements
+      tags: [announcements]
+      summary: Get all active announcements
+      responses:
+        "200":
+          description: List of announcements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Announcement"
+    post:
+      operationId: createAnnouncement
+      tags: [announcements, admin]
+      summary: Create an announcement (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAnnouncement"
+      responses:
+        "201":
+          description: Announcement created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Announcement"
+
+  /announcements/{id}:
+    put:
+      operationId: updateAnnouncement
+      tags: [announcements, admin]
+      summary: Update an announcement (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAnnouncement"
+      responses:
+        "200":
+          description: Updated announcement
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Announcement"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteAnnouncement
+      tags: [announcements, admin]
+      summary: Delete an announcement (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+
+  /admin/login:
+    post:
+      operationId: adminLogin
+      tags: [admin]
+      summary: Admin login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminLoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin]
+      summary: Admin logout
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+
+  /admin/me:
+    get:
+      operationId: getAdminMe
+      tags: [admin]
+      summary: Get current admin session
+      responses:
+        "200":
+          description: Admin session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSession"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +271,214 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required:
+        - error
+
+    CreateRegistration:
+      type: object
+      properties:
+        fullName:
+          type: string
+          minLength: 2
+          maxLength: 100
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          minLength: 10
+          maxLength: 15
+        collegeDepartment:
+          type: string
+          minLength: 2
+          maxLength: 200
+        event:
+          type: string
+          enum:
+            - singing
+            - dance
+            - mehandi
+            - makeup
+            - hairstyle
+            - cooking_without_fire
+        participationType:
+          type: string
+          enum:
+            - individual
+            - team
+        teamName:
+          type: string
+          nullable: true
+        teamSize:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 10
+      required:
+        - fullName
+        - email
+        - phone
+        - collegeDepartment
+        - event
+        - participationType
+
+    Registration:
+      type: object
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        collegeDepartment:
+          type: string
+        event:
+          type: string
+        participationType:
+          type: string
+        teamName:
+          type: string
+          nullable: true
+        teamSize:
+          type: integer
+          nullable: true
+        registeredAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - fullName
+        - email
+        - phone
+        - collegeDepartment
+        - event
+        - participationType
+        - registeredAt
+
+    RegistrationStats:
+      type: object
+      properties:
+        total:
+          type: integer
+        byEvent:
+          type: array
+          items:
+            type: object
+            properties:
+              event:
+                type: string
+              count:
+                type: integer
+            required:
+              - event
+              - count
+        byParticipationType:
+          type: object
+          properties:
+            individual:
+              type: integer
+            team:
+              type: integer
+          required:
+            - individual
+            - team
+      required:
+        - total
+        - byEvent
+        - byParticipationType
+
+    CreateAnnouncement:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 2
+          maxLength: 200
+        content:
+          type: string
+          minLength: 2
+        category:
+          type: string
+          enum:
+            - general
+            - deadline
+            - timing_change
+            - venue
+            - important
+        isActive:
+          type: boolean
+      required:
+        - title
+        - content
+        - category
+
+    Announcement:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - content
+        - category
+        - isActive
+        - createdAt
+        - updatedAt
+
+    AdminLoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+
+    AdminLoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        username:
+          type: string
+      required:
+        - success
+        - username
+
+    AdminSession:
+      type: object
+      properties:
+        isAuthenticated:
+          type: boolean
+        username:
+          type: string
+          nullable: true
+      required:
+        - isAuthenticated
