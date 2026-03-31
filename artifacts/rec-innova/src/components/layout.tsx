@@ -153,7 +153,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </p>
               <div className="flex items-center gap-2 text-xs text-muted-foreground/60 font-rajdhani">
                 <Calendar className="h-3 w-3" />
-                <span>April 15, 2026 · REC Main Auditorium</span>
+                <span>April 25, 2026 · REC Main Auditorium</span>
               </div>
             </div>
 

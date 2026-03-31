@@ -16,4 +16,7 @@ export const CreateRegistrationEvent = {
   makeup: "makeup",
   hairstyle: "hairstyle",
   cooking_without_fire: "cooking_without_fire",
+  nail_art: "nail_art",
+  reels: "reels",
+  debate: "debate",
 } as const;

@@ -18,7 +18,7 @@ const registrationSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone must be at least 10 digits").max(15),
   collegeDepartment: z.string().min(2, "Required"),
-  event: z.enum(["singing", "dance", "mehandi", "makeup", "hairstyle", "cooking_without_fire"]),
+  event: z.enum(["singing", "dance", "mehandi", "makeup", "hairstyle", "cooking_without_fire", "nail_art", "reels", "debate"]),
   participationType: z.enum(["individual", "team"]),
   teamName: z.string().optional(),
   teamSize: z.coerce.number().min(1).max(10).optional(),
@@ -59,7 +59,7 @@ export default function Register() {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const eventParam = searchParams.get("event");
-    if (eventParam && ["singing", "dance", "mehandi", "makeup", "hairstyle", "cooking_without_fire"].includes(eventParam)) {
+    if (eventParam && ["singing", "dance", "mehandi", "makeup", "hairstyle", "cooking_without_fire", "nail_art", "reels", "debate"].includes(eventParam)) {
       form.setValue("event", eventParam as any);
     }
   }, [form]);
@@ -100,7 +100,7 @@ export default function Register() {
                 <CheckCircle2 className="w-20 h-20 text-primary mx-auto mb-6" />
                 <h2 className="text-3xl font-bold mb-4">You're In!</h2>
                 <p className="text-muted-foreground mb-8">
-                  Your registration has been confirmed. Get ready to show your talent on April 15, 2026!
+                  Your registration has been confirmed. Get ready to show your talent on April 25, 2026!
                 </p>
                 <div className="flex gap-4 justify-center">
                   <Button variant="outline" onClick={() => {
@@ -182,12 +182,15 @@ export default function Register() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="singing">Singing Competition</SelectItem>
-                              <SelectItem value="dance">Dance Competition</SelectItem>
-                              <SelectItem value="mehandi">Mehandi</SelectItem>
-                              <SelectItem value="makeup">Makeup</SelectItem>
-                              <SelectItem value="hairstyle">Hairstyle</SelectItem>
-                              <SelectItem value="cooking_without_fire">Cooking Without Fire</SelectItem>
+                              <SelectItem value="singing">🎤 Singing Competition</SelectItem>
+                              <SelectItem value="dance">💃 Dance Competition</SelectItem>
+                              <SelectItem value="mehandi">🌿 Mehandi</SelectItem>
+                              <SelectItem value="makeup">💄 Makeup</SelectItem>
+                              <SelectItem value="hairstyle">✨ Hairstyle</SelectItem>
+                              <SelectItem value="cooking_without_fire">🍱 Cooking Without Fire</SelectItem>
+                              <SelectItem value="nail_art">💅 Nail Art</SelectItem>
+                              <SelectItem value="reels">🎬 Reels Competition</SelectItem>
+                              <SelectItem value="debate">🗣️ Debate Competition</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />

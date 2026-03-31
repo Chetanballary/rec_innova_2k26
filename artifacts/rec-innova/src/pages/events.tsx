@@ -1,7 +1,7 @@
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Clock, Info, Users, Music, Flame, Sparkles, Star, Zap, Trophy, ArrowRight } from "lucide-react";
+import { Clock, Info, Users, Music, Flame, Sparkles, Star, Zap, Trophy, ArrowRight, Fingerprint, Video, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 
 const EVENT_LIST = [
@@ -89,6 +89,48 @@ const EVENT_LIST = [
     glow: "rgba(249,115,22,0.4)",
     tag: "Culinary",
   },
+  {
+    id: "nail_art",
+    title: "Nail Art",
+    emoji: "💅",
+    Icon: Fingerprint,
+    description: "Express your artistry on tiny canvases. Design intricate, creative, and colorful nail art patterns that wow the judges.",
+    rules: "Time limit: 45 mins. All nail art supplies must be brought by the participant.",
+    time: "11:00 AM - 11:45 AM",
+    type: "Individual",
+    from: "#f43f5e",
+    to: "#e11d48",
+    glow: "rgba(244,63,94,0.4)",
+    tag: "Art",
+  },
+  {
+    id: "reels",
+    title: "Reels Competition",
+    emoji: "🎬",
+    Icon: Video,
+    description: "Create and present a short, engaging reel on stage. Showcase storytelling, editing skills, and creativity in under 60 seconds.",
+    rules: "Max 60 seconds. Must be original content. Reel to be submitted before the event day.",
+    time: "2:30 PM - 4:00 PM",
+    type: "Individual / Team",
+    from: "#8b5cf6",
+    to: "#6d28d9",
+    glow: "rgba(139,92,246,0.4)",
+    tag: "Digital",
+  },
+  {
+    id: "debate",
+    title: "Debate Competition",
+    emoji: "🗣️",
+    Icon: MessageSquare,
+    description: "Battle of minds and words. Argue your stance on thought-provoking topics. Fluency, reasoning, and confidence are key.",
+    rules: "2 speakers per team. 3 mins per side + 1 min rebuttal. Topics revealed 30 mins before.",
+    time: "10:00 AM - 1:00 PM",
+    type: "Team (2 members)",
+    from: "#06b6d4",
+    to: "#0891b2",
+    glow: "rgba(6,182,212,0.4)",
+    tag: "Speaking",
+  },
 ];
 
 export default function Events() {
@@ -107,14 +149,14 @@ export default function Events() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/30 bg-accent/10 text-accent mb-6">
               <Trophy size={14} />
-              <span className="font-rajdhani text-xs font-semibold tracking-widest uppercase">6 Competitions · April 15, 2026</span>
+              <span className="font-rajdhani text-xs font-semibold tracking-widest uppercase">9 Competitions · April 6, 2026</span>
             </div>
             <h1 className="font-orbitron text-4xl md:text-7xl font-black mb-5 leading-none">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Events</span>
               <span className="text-white"> Lineup</span>
             </h1>
             <p className="font-rajdhani text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
-              Six thrilling competitions. One epic day. Which stage will you own?
+              Nine thrilling competitions. One epic day. Which stage will you own?
             </p>
           </motion.div>
         </div>

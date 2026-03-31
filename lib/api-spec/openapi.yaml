@@ -308,6 +308,9 @@ components:
             - makeup
             - hairstyle
             - cooking_without_fire
+            - nail_art
+            - reels
+            - debate
         participationType:
           type: string
           enum:

@@ -18,7 +18,7 @@ export const registrationsTable = pgTable("registrations", {
 export const insertRegistrationSchema = createInsertSchema(registrationsTable)
   .omit({ id: true, registeredAt: true })
   .extend({
-    event: z.enum(["singing", "dance", "mehandi", "makeup", "hairstyle", "cooking_without_fire"]),
+    event: z.enum(["singing", "dance", "mehandi", "makeup", "hairstyle", "cooking_without_fire", "nail_art", "reels", "debate"]),
     participationType: z.enum(["individual", "team"]),
   });
 
