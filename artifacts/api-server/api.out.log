@@ -1,0 +1,372 @@
+[00:56:33.903] [32mINFO[39m (19088): [36mServer listening[39m
+    [35mport[39m: 8080
+[00:56:52.055] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 1,
+      "method": "GET",
+      "url": "/api/healthz"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 13
+[00:57:19.773] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 3,
+      "method": "POST",
+      "url": "/api/admin/login"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 6
+[00:57:21.302] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 4,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 1485
+[00:57:21.313] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 2,
+      "method": "POST",
+      "url": "/api/registrations"
+    }
+    [35mres[39m: {
+      "statusCode": 201
+    }
+    [35mresponseTime[39m: 1588
+[00:57:50.331] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 5,
+      "method": "POST",
+      "url": "/api/admin/login"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 2
+[00:57:51.700] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 6,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 1317
+[00:58:00.513] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 7,
+      "method": "GET",
+      "url": "/api/admin/me"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 3
+[00:58:00.519] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 8,
+      "method": "GET",
+      "url": "/api/registrations/stats"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 2
+[00:58:10.898] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 9,
+      "method": "POST",
+      "url": "/api/admin/login"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 3
+[00:58:12.229] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 10,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 1288
+[00:59:11.553] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 11,
+      "method": "POST",
+      "url": "/api/admin/login"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 3
+[00:59:11.648] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 12,
+      "method": "GET",
+      "url": "/api/admin/me"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 1
+[00:59:13.366] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 13,
+      "method": "GET",
+      "url": "/api/registrations/stats"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 1598
+[00:59:25.334] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 14,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 1325
+[01:12:51.891] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 15,
+      "method": "GET",
+      "url": "/api/announcements"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 1449
+[01:17:00.448] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 16,
+      "method": "GET",
+      "url": "/api/announcements"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 1295
+[01:27:43.633] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 17,
+      "method": "GET",
+      "url": "/api/announcements"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 1176
+[01:28:18.556] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 18,
+      "method": "POST",
+      "url": "/api/registrations"
+    }
+    [35mres[39m: {
+      "statusCode": 201
+    }
+    [35mresponseTime[39m: 1347
+[01:28:29.270] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 19,
+      "method": "GET",
+      "url": "/api/admin/me"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 2
+[01:28:30.868] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 20,
+      "method": "GET",
+      "url": "/api/registrations/stats"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 1470
+[01:28:33.909] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 21,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 325
+[01:28:55.670] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 22,
+      "method": "GET",
+      "url": "/api/registrations/stats"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 1530
+[01:33:58.680] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 23,
+      "method": "GET",
+      "url": "/api/admin/me"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 3
+[01:34:00.198] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 24,
+      "method": "GET",
+      "url": "/api/registrations/stats"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 1520
+[01:42:12.258] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 25,
+      "method": "GET",
+      "url": "/api/admin/me"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 4
+[01:42:13.946] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 26,
+      "method": "GET",
+      "url": "/api/registrations/stats"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 1687
+[01:42:14.910] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 27,
+      "method": "GET",
+      "url": "/api/admin/me"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 4
+[01:42:15.741] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 28,
+      "method": "GET",
+      "url": "/api/registrations/stats"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 680
+[01:42:20.042] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 29,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 426
+[01:42:36.212] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 30,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 1319
+[01:42:40.245] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 31,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 296
+[01:42:43.226] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 32,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 311
+[01:42:47.892] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 33,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 474
+[01:43:04.410] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 34,
+      "method": "GET",
+      "url": "/api/admin/me"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 5
+[01:43:05.962] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 35,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 1245
+[01:53:14.373] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 36,
+      "method": "GET",
+      "url": "/api/admin/me"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 4
+[01:53:15.695] [32mINFO[39m (19088): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 37,
+      "method": "GET",
+      "url": "/api/registrations/all"
+    }
+    [35mres[39m: {
+      "statusCode": 304
+    }
+    [35mresponseTime[39m: 1325

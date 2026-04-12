@@ -153,7 +153,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </p>
               <div className="flex items-center gap-2 text-xs text-muted-foreground/60 font-rajdhani">
                 <Calendar className="h-3 w-3" />
-                <span>April 25, 2026 · REC Main Auditorium</span>
+                <span>April 30, 2026</span>
               </div>
             </div>
 
@@ -181,10 +181,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <h4 className="font-orbitron text-xs font-bold tracking-widest text-white/50 uppercase mb-4">Events</h4>
               <div className="flex flex-col gap-2">
                 {[
-                  { icon: Music, label: "Singing Competition", color: "#a855f7" },
-                  { icon: Flame, label: "Dance Competition", color: "#22d3ee" },
-                  { icon: Sparkles, label: "Mehandi & Makeup", color: "#ec4899" },
-                  { icon: Trophy, label: "Cooking Without Fire", color: "#f97316" },
+                  { icon: Sparkles, label: "Mehandi - 21/04/26 (Morning)", color: "#ec4899" },
+                  { icon: Music, label: "Singing - 21/04/26 (Afternoon)", color: "#a855f7" },
+                  { icon: Trophy, label: "Rangoli - 22/04/26 (Morning)", color: "#f97316" },
+                  { icon: Flame, label: "Debate - 22/04/26 (Afternoon)", color: "#22d3ee" },
+                  { icon: Sparkles, label: "Reels - 23/04/26 (Morning)", color: "#ec4899" },
+                  { icon: Trophy, label: "Cook Without Fire - 23/04/26 (Afternoon)", color: "#f97316" },
+                  { icon: Sparkles, label: "Nail Art - 24/04/26 (Morning)", color: "#ec4899" },
+                  { icon: Sparkles, label: "Hair & Makeover - 24/04/26 (Afternoon)", color: "#ec4899" },
+                  { icon: Flame, label: "Dance - 27/04/26 (Afternoon)", color: "#22d3ee" },
                 ].map((e, i) => (
                   <Link key={i} href="/events" className="flex items-center gap-2 group">
                     <e.icon className="h-3.5 w-3.5 transition-colors" style={{ color: e.color }} />

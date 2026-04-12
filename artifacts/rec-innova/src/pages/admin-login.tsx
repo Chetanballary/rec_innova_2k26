@@ -11,8 +11,23 @@ import { useLocation } from "wouter";
 import { Loader2, ShieldAlert } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useQueryClient } from "@tanstack/react-query";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const competitionEvents = [
+  "all",
+  "singing",
+  "dance",
+  "mehandi",
+  "hair_and_makeover",
+  "rangoli",
+  "cooking_without_fire",
+  "nail_art",
+  "reels",
+  "debate",
+] as const;
 
 const loginSchema = z.object({
+  event: z.enum(competitionEvents),
   username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
 });
@@ -26,6 +41,7 @@ export default function AdminLogin() {
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
+      event: "all",
       username: "",
       password: "",
     }
@@ -33,13 +49,13 @@ export default function AdminLogin() {
 
   const onSubmit = (data: z.infer<typeof loginSchema>) => {
     login.mutate({ data }, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         toast({
           title: "Login Successful",
           description: "Welcome to the admin dashboard.",
         });
         queryClient.invalidateQueries({ queryKey: getGetAdminMeQueryKey() });
-        setLocation("/admin/dashboard");
+        setLocation(`/admin/${response.event ?? data.event}/dashboard`);
       },
       onError: (error: any) => {
         toast({
@@ -60,11 +76,41 @@ export default function AdminLogin() {
               <ShieldAlert size={32} />
             </div>
             <CardTitle className="text-2xl font-bold">Admin Portal</CardTitle>
-            <CardDescription>Sign in to manage REC INNOVA 2K26</CardDescription>
+            <CardDescription>Sign in for a specific competition</CardDescription>
+            <CardDescription>Use `onlyadmin` / `onlyadmin` with `All Competitions` for full access.</CardDescription>
           </CardHeader>
           <CardContent className="pt-8">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="event"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Competition</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="bg-black/50 border-white/10 h-12">
+                            <SelectValue placeholder="Select competition" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="all">All Competitions</SelectItem>
+                          <SelectItem value="singing">Singing</SelectItem>
+                          <SelectItem value="dance">Dance</SelectItem>
+                          <SelectItem value="mehandi">Mehandi</SelectItem>
+                          <SelectItem value="hair_and_makeover">Hair and Makeover Competition</SelectItem>
+                          <SelectItem value="rangoli">Rangoli Competition</SelectItem>
+                          <SelectItem value="cooking_without_fire">Cooking Without Fire</SelectItem>
+                          <SelectItem value="nail_art">Nail Art</SelectItem>
+                          <SelectItem value="reels">Reels</SelectItem>
+                          <SelectItem value="debate">Debate</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="username"

@@ -24,19 +24,22 @@ function useCountdown(target: Date) {
   return timeLeft;
 }
 
-const FEST_DATE = new Date("2026-04-25T09:00:00");
+const FEST_DATE = new Date("2026-04-30T09:00:00");
 
 function CountdownBlock({ value, label }: { value: number; label: string }) {
   const prev = useRef(value);
   const [flip, setFlip] = useState(false);
 
   useEffect(() => {
+    let t: ReturnType<typeof setTimeout> | undefined;
     if (prev.current !== value) {
       setFlip(true);
       prev.current = value;
-      const t = setTimeout(() => setFlip(false), 300);
-      return () => clearTimeout(t);
+      t = setTimeout(() => setFlip(false), 300);
     }
+    return () => {
+      if (t) clearTimeout(t);
+    };
   }, [value]);
 
   return (
@@ -96,8 +99,8 @@ const EVENTS = [
   { icon: Music, label: "Singing", color: "#a855f7" },
   { icon: Flame, label: "Dance", color: "#22d3ee" },
   { icon: Sparkles, label: "Mehandi", color: "#ec4899" },
-  { icon: Star, label: "Makeup", color: "#f59e0b" },
-  { icon: Zap, label: "Hairstyle", color: "#10b981" },
+  { icon: Star, label: "Hair & Makeover", color: "#f59e0b" },
+  { icon: Zap, label: "Rangoli", color: "#10b981" },
   { icon: Trophy, label: "Cooking", color: "#f97316" },
   { icon: Fingerprint, label: "Nail Art", color: "#f43f5e" },
   { icon: Video, label: "Reels", color: "#8b5cf6" },
@@ -129,6 +132,22 @@ export default function Home() {
           style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
 
         <div className="container mx-auto px-4 flex flex-col items-center text-center z-10 py-24">
+          {/* College Header */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-8"
+          >
+            <p className="font-rajdhani text-sm md:text-base font-semibold tracking-wider text-muted-foreground mb-2">R.T.E SOCIETY'S</p>
+            <h2 className="font-orbitron text-2xl md:text-3xl font-bold text-white mb-2">
+              RURAL ENGINEERING COLLEGE, HULKOTI
+            </h2>
+            <p className="font-rajdhani text-xs md:text-sm text-muted-foreground">
+              Approved by AICTE, New Delhi and Affiliated by VTU, Belagavi
+            </p>
+          </motion.div>
+
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -193,12 +212,12 @@ export default function Home() {
           >
             <div className="flex items-center gap-2">
               <Calendar className="text-primary h-5 w-5" />
-              <span className="font-rajdhani font-semibold text-lg">Competitions: April 6, 2026</span>
+              <span className="font-rajdhani font-semibold text-lg">Competitions: April 21, 2026</span>
             </div>
             <div className="hidden sm:block w-1.5 h-1.5 rounded-full bg-white/20" />
             <div className="flex items-center gap-2">
               <Calendar className="text-secondary h-5 w-5" />
-              <span className="font-rajdhani font-semibold text-lg">Fest: April 25, 2026</span>
+              <span className="font-rajdhani font-semibold text-lg">Fest: April 30, 2026</span>
             </div>
           </motion.div>
 
@@ -310,7 +329,7 @@ export default function Home() {
               Ready to <span className="text-shimmer">Shine?</span>
             </h2>
             <p className="font-rajdhani text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-medium">
-              Registration is open. Grab your spot now and get ready for the biggest cultural fest on April 25, 2026.
+              Registration is open. Grab your spot now and get ready for the biggest cultural fest on April 30, 2026.
             </p>
             <Button size="lg" asChild className="glow-button h-14 px-12 text-xl font-rajdhani font-bold tracking-widest rounded-xl bg-gradient-to-r from-primary to-secondary shadow-[0_0_50px_rgba(168,85,247,0.6)] border-0 hover:shadow-[0_0_80px_rgba(168,85,247,0.8)] transition-shadow">
               <Link href="/register">

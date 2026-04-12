@@ -23,7 +23,7 @@ function Router() {
       <Route path="/announcements" component={Announcements} />
       <Route path="/contact" component={Contact} />
       <Route path="/admin" component={AdminLogin} />
-      <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/admin/:event/dashboard" component={AdminDashboard} />
       <Route component={NotFound} />
     </Switch>
   );

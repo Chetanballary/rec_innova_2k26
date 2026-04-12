@@ -43,6 +43,9 @@ export default function Contact() {
                     <a href="tel:+916361343593" className="font-rajdhani text-secondary hover:text-white transition-colors text-base block">
                       +91 63613 43593
                     </a>
+                    <a href="https://chezresume.netlify.app" target="_blank" rel="noopener noreferrer" className="font-rajdhani text-sm text-primary hover:text-white transition-colors block">
+                      chezresume.netlify.app
+                    </a>
                   </div>
                   <Button variant="outline" className="mt-2 border-secondary/40 text-secondary hover:bg-secondary hover:text-white rounded-xl font-rajdhani font-semibold tracking-wide" asChild>
                     <a href="https://wa.me/916361343593" target="_blank" rel="noopener noreferrer">
@@ -89,8 +92,7 @@ export default function Contact() {
                     <h3 className="font-orbitron text-lg font-bold text-white mb-2">REC INNOVA 2K26</h3>
                     <div className="space-y-1 font-rajdhani text-muted-foreground">
                       <p><span className="text-white/70 font-semibold">Competitions Day:</span> April 6, 2026</p>
-                      <p><span className="text-white/70 font-semibold">Fest Date:</span> April 25, 2026</p>
-                      <p><span className="text-white/70 font-semibold">Venue:</span> REC Main Auditorium, Rajalakshmi Engineering College</p>
+                      <p><span className="text-white/70 font-semibold">Fest Date:</span> April 30, 2026</p>
                     </div>
                   </div>
                   <div className="md:ml-auto">

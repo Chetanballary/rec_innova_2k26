@@ -1,5 +1,5 @@
 import { Layout } from "@/components/layout";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -18,7 +18,8 @@ const registrationSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone must be at least 10 digits").max(15),
   collegeDepartment: z.string().min(2, "Required"),
-  event: z.enum(["singing", "dance", "mehandi", "makeup", "hairstyle", "cooking_without_fire", "nail_art", "reels", "debate"]),
+  semester: z.string().min(1, "Required"),
+  event: z.enum(["singing", "dance", "mehandi", "hair_and_makeover", "rangoli", "cooking_without_fire", "nail_art", "reels", "debate"]),
   participationType: z.enum(["individual", "team"]),
   teamName: z.string().optional(),
   teamSize: z.coerce.number().min(1).max(10).optional(),
@@ -47,6 +48,7 @@ export default function Register() {
       email: "",
       phone: "",
       collegeDepartment: "",
+      semester: "",
       event: "singing", // We'll update this from URL params
       participationType: "individual",
       teamName: "",
@@ -59,13 +61,15 @@ export default function Register() {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const eventParam = searchParams.get("event");
-    if (eventParam && ["singing", "dance", "mehandi", "makeup", "hairstyle", "cooking_without_fire", "nail_art", "reels", "debate"].includes(eventParam)) {
+    if (eventParam && ["singing", "dance", "mehandi", "hair_and_makeover", "rangoli", "cooking_without_fire", "nail_art", "reels", "debate"].includes(eventParam)) {
       form.setValue("event", eventParam as any);
     }
   }, [form]);
 
   const onSubmit = (data: FormValues) => {
-    createReg.mutate({ data }, {
+    // Remove semester field as it's not part of the API schema
+    const { semester, ...apiData } = data;
+    createReg.mutate({ data: apiData as any }, {
       onSuccess: () => {
         setSuccess(true);
         toast({
@@ -74,10 +78,16 @@ export default function Register() {
         });
       },
       onError: (error: any) => {
+        const message =
+          error?.data?.message ||
+          error?.data?.detail ||
+          error?.data?.error ||
+          error?.message ||
+          "Something went wrong. Please try again.";
         toast({
           variant: "destructive",
           title: "Registration Failed",
-          description: error?.response?.data?.message || "Something went wrong. Please try again.",
+          description: message,
         });
       }
     });
@@ -168,6 +178,33 @@ export default function Register() {
                         </FormItem>
                       )}
                     />
+                    <FormField
+                      control={form.control}
+                      name="semester"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Semester</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="bg-black/50 border-white/10">
+                                <SelectValue placeholder="Select semester" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="1">1</SelectItem>
+                              <SelectItem value="2">2</SelectItem>
+                              <SelectItem value="3">3</SelectItem>
+                              <SelectItem value="4">4</SelectItem>
+                              <SelectItem value="5">5</SelectItem>
+                              <SelectItem value="6">6</SelectItem>
+                              <SelectItem value="7">7</SelectItem>
+                              <SelectItem value="8">8</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     
                     <FormField
                       control={form.control}
@@ -182,15 +219,15 @@ export default function Register() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="singing">🎤 Singing Competition</SelectItem>
-                              <SelectItem value="dance">💃 Dance Competition</SelectItem>
-                              <SelectItem value="mehandi">🌿 Mehandi</SelectItem>
-                              <SelectItem value="makeup">💄 Makeup</SelectItem>
-                              <SelectItem value="hairstyle">✨ Hairstyle</SelectItem>
-                              <SelectItem value="cooking_without_fire">🍱 Cooking Without Fire</SelectItem>
-                              <SelectItem value="nail_art">💅 Nail Art</SelectItem>
-                              <SelectItem value="reels">🎬 Reels Competition</SelectItem>
-                              <SelectItem value="debate">🗣️ Debate Competition</SelectItem>
+                              <SelectItem value="singing">Singing Competition</SelectItem>
+                              <SelectItem value="dance">Dance Competition</SelectItem>
+                              <SelectItem value="mehandi">Mehandi</SelectItem>
+                              <SelectItem value="hair_and_makeover">Hair and Makeover Competition</SelectItem>
+                              <SelectItem value="rangoli">Rangoli Competition</SelectItem>
+                              <SelectItem value="cooking_without_fire">Cooking Without Fire</SelectItem>
+                              <SelectItem value="nail_art">Nail Art</SelectItem>
+                              <SelectItem value="reels">Reels Competition</SelectItem>
+                              <SelectItem value="debate">Debate Competition</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />

@@ -305,8 +305,8 @@ components:
             - singing
             - dance
             - mehandi
-            - makeup
-            - hairstyle
+            - hair_and_makeover
+            - rangoli
             - cooking_without_fire
             - nail_art
             - reels
@@ -456,11 +456,24 @@ components:
     AdminLoginRequest:
       type: object
       properties:
+        event:
+          type: string
+          enum:
+            - singing
+            - dance
+            - mehandi
+            - hair_and_makeover
+            - rangoli
+            - cooking_without_fire
+            - nail_art
+            - reels
+            - debate
         username:
           type: string
         password:
           type: string
       required:
+        - event
         - username
         - password
 
@@ -471,9 +484,12 @@ components:
           type: boolean
         username:
           type: string
+        event:
+          type: string
       required:
         - success
         - username
+        - event
 
     AdminSession:
       type: object
@@ -481,6 +497,9 @@ components:
         isAuthenticated:
           type: boolean
         username:
+          type: string
+          nullable: true
+        event:
           type: string
           nullable: true
       required:

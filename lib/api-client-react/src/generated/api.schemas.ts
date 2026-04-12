@@ -21,8 +21,8 @@ export const CreateRegistrationEvent = {
   singing: "singing",
   dance: "dance",
   mehandi: "mehandi",
-  makeup: "makeup",
-  hairstyle: "hairstyle",
+  hair_and_makeover: "hair_and_makeover",
+  rangoli: "rangoli",
   cooking_without_fire: "cooking_without_fire",
   nail_art: "nail_art",
   reels: "reels",
@@ -127,6 +127,7 @@ export interface Announcement {
 }
 
 export interface AdminLoginRequest {
+  event: string;
   username: string;
   password: string;
 }
@@ -134,11 +135,15 @@ export interface AdminLoginRequest {
 export interface AdminLoginResponse {
   success: boolean;
   username: string;
+  event: string;
+  isSuperAdmin?: boolean;
 }
 
 export interface AdminSession {
   isAuthenticated: boolean;
   username?: string | null;
+  event?: string | null;
+  isSuperAdmin?: boolean;
 }
 
 export type GetAllRegistrationsParams = {

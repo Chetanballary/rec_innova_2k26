@@ -19,7 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Loader2, LogOut, Plus, Trash2, Edit, RefreshCw } from "lucide-react";
+import { Loader2, LogOut, Plus, Trash2, Edit, RefreshCw, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -31,6 +31,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+
+const eventOptions = [
+  { value: "all", label: "All Competitions" },
+  { value: "singing", label: "Singing" },
+  { value: "dance", label: "Dance" },
+  { value: "mehandi", label: "Mehandi" },
+  { value: "hair_and_makeover", label: "Hair and Makeover Competition" },
+  { value: "rangoli", label: "Rangoli Competition" },
+  { value: "cooking_without_fire", label: "Cooking Without Fire" },
+  { value: "nail_art", label: "Nail Art" },
+  { value: "reels", label: "Reels" },
+  { value: "debate", label: "Debate" },
+] as const;
 
 const announcementSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -61,6 +74,16 @@ export default function AdminDashboard() {
     }
   }, [adminSession, isAuthLoading, isAuthError, setLocation]);
 
+  // If user is logged in for one competition, keep URL aligned.
+  useEffect(() => {
+    if (!isAuthLoading && adminSession?.isAuthenticated && adminSession.event) {
+      const expected = `/admin/${adminSession.event}/dashboard`;
+      // If user navigated to the old URL, normalize.
+      // wouter doesn't expose route params here, so we just ensure we're on the expected path.
+      if (window.location.pathname !== expected) setLocation(expected);
+    }
+  }, [adminSession, isAuthLoading, setLocation]);
+
   const handleLogout = () => {
     logout.mutate(undefined, {
       onSuccess: () => {
@@ -90,7 +113,9 @@ export default function AdminDashboard() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold">Admin Dashboard</h1>
-            <p className="text-muted-foreground mt-2">Manage REC INNOVA 2K26</p>
+            <p className="text-muted-foreground mt-2">
+              Competition: {adminSession.event}
+            </p>
           </div>
           <Button variant="outline" onClick={handleLogout} className="border-white/10 hover:bg-white/5">
             <LogOut className="w-4 h-4 mr-2" />
@@ -106,11 +131,11 @@ export default function AdminDashboard() {
           </TabsList>
 
           <TabsContent value="overview">
-            <OverviewTab />
+            <OverviewTab adminSession={adminSession} />
           </TabsContent>
 
           <TabsContent value="registrations">
-            <RegistrationsTab />
+            <RegistrationsTab adminSession={adminSession} />
           </TabsContent>
 
           <TabsContent value="announcements">
@@ -122,7 +147,7 @@ export default function AdminDashboard() {
   );
 }
 
-function OverviewTab() {
+function OverviewTab({ adminSession }: { adminSession: { event?: string | null; isSuperAdmin?: boolean } }) {
   const { data: stats, isLoading, refetch } = useGetRegistrationStats({
     query: { queryKey: getGetRegistrationStatsQueryKey() }
   });
@@ -171,7 +196,7 @@ function OverviewTab() {
 
       <Card className="bg-white/5 border-white/10 mt-8">
         <CardHeader>
-          <CardTitle>Registrations by Event</CardTitle>
+          <CardTitle>{adminSession.isSuperAdmin ? "Registrations by Competition" : "Registrations by Event"}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -188,34 +213,88 @@ function OverviewTab() {
   );
 }
 
-function RegistrationsTab() {
-  const [eventFilter, setEventFilter] = useState<string>("all");
+function RegistrationsTab({ adminSession }: { adminSession: { event?: string | null; isSuperAdmin?: boolean } }) {
+  const [eventFilter, setEventFilter] = useState<string>(adminSession.isSuperAdmin ? "all" : (adminSession.event ?? "all"));
   const { data, isLoading } = useGetAllRegistrations(
     eventFilter !== "all" ? { event: eventFilter } : {},
     { query: { queryKey: getGetAllRegistrationsQueryKey(eventFilter !== "all" ? { event: eventFilter } : {}) } }
   );
+
+  useEffect(() => {
+    setEventFilter(adminSession.isSuperAdmin ? "all" : (adminSession.event ?? "all"));
+  }, [adminSession.event, adminSession.isSuperAdmin]);
+
+  const handleDownloadCSV = (registrations: any[]) => {
+    if (!registrations || registrations.length === 0) return;
+
+    const headers = ['Full Name', 'Email', 'Phone', 'College/Department', 'Event', 'Participation Type', 'Team Name', 'Team Size', 'Registered At'];
+    const rows = registrations.map(reg => [
+      String(reg.fullName || '').trim(),
+      String(reg.email || '').trim(),
+      String(reg.phone || '').trim(),
+      String(reg.collegeDepartment || '').trim(),
+      String(reg.event || '').replace(/_/g, ' '),
+      String(reg.participationType || '').trim(),
+      String(reg.teamName || '-').trim(),
+      String(reg.teamSize || '-').trim(),
+      format(new Date(reg.registeredAt), 'MMM d, yyyy HH:mm')
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `participants-${format(new Date(), 'yyyy-MM-dd HH-mm-ss')}.csv`;
+    link.click();
+    window.URL.revokeObjectURL(url);
+  };
 
   return (
     <Card className="bg-white/5 border-white/10 animate-in fade-in duration-500">
       <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <CardTitle>All Registrations</CardTitle>
-          <CardDescription>View and filter participant details.</CardDescription>
+          <CardDescription>
+            {adminSession.isSuperAdmin
+              ? "View registrations across every competition or drill into a single event."
+              : "View participant details for your competition."}
+          </CardDescription>
         </div>
-        <Select value={eventFilter} onValueChange={setEventFilter}>
-          <SelectTrigger className="w-[200px] bg-black/50 border-white/10">
-            <SelectValue placeholder="Filter by Event" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Events</SelectItem>
-            <SelectItem value="singing">Singing</SelectItem>
-            <SelectItem value="dance">Dance</SelectItem>
-            <SelectItem value="mehandi">Mehandi</SelectItem>
-            <SelectItem value="makeup">Makeup</SelectItem>
-            <SelectItem value="hairstyle">Hairstyle</SelectItem>
-            <SelectItem value="cooking_without_fire">Cooking Without Fire</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleDownloadCSV(data?.registrations)}
+            className="border-white/10 hover:bg-white/5"
+            disabled={!data?.registrations || data.registrations.length === 0}
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Download CSV
+          </Button>
+          <Select
+            value={eventFilter}
+            onValueChange={setEventFilter}
+            disabled={!adminSession.isSuperAdmin}
+          >
+            <SelectTrigger className="w-[200px] bg-black/50 border-white/10">
+              <SelectValue placeholder="Filter by Event" />
+            </SelectTrigger>
+            <SelectContent>
+              {eventOptions
+                .filter((option) => adminSession.isSuperAdmin || option.value === adminSession.event)
+                .map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+        </div>
       </CardHeader>
       <CardContent>
         {isLoading ? (

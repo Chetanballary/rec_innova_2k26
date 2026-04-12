@@ -9,4 +9,6 @@
 export interface AdminSession {
   isAuthenticated: boolean;
   username?: string | null;
+  event?: string | null;
+  isSuperAdmin?: boolean;
 }

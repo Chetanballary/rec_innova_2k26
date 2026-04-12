@@ -9,4 +9,6 @@
 export interface AdminLoginResponse {
   success: boolean;
   username: string;
+  event?: string;
+  isSuperAdmin?: boolean;
 }

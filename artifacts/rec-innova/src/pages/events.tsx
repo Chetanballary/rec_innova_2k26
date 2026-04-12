@@ -1,8 +1,9 @@
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Clock, Info, Users, Music, Flame, Sparkles, Star, Zap, Trophy, ArrowRight, Fingerprint, Video, MessageSquare } from "lucide-react";
-import { motion } from "framer-motion";
+import { Clock, Info, Users, Music, Flame, Sparkles, Star, Zap, Trophy, ArrowRight, Fingerprint, Video, MessageSquare, Calendar, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 const EVENT_LIST = [
   {
@@ -10,9 +11,10 @@ const EVENT_LIST = [
     title: "Singing Competition",
     emoji: "🎤",
     Icon: Music,
-    description: "Hit the right notes and captivate the audience with your melodious voice. Open to solo and group performers.",
-    rules: "Time limit: 3-5 mins. Karaoke track to be submitted in advance.",
-    time: "10:00 AM - 12:00 PM",
+    description: "Hit the right notes and captivate the audience with your melodious voice. Open to solo and group performers. (Afternoon)",
+    rules: "• Solo and group categories open\n• Max 4 members in a group\n• Time: 5+2 min (performance + setup)\n• Karaoke track must be provided by participants\n• Report 10 mins prior to event\n• Judge's decision is final",
+    date: "21/04/26",
+    time: "Afternoon",
     type: "Individual / Team",
     from: "#a855f7",
     to: "#7c3aed",
@@ -24,9 +26,10 @@ const EVENT_LIST = [
     title: "Dance Competition",
     emoji: "💃",
     Icon: Flame,
-    description: "Set the stage on fire with your moves. Classical, Western, Folk or Freestyle - show us what you've got.",
-    rules: "Time limit: 4-6 mins. Props allowed but no fire/water.",
-    time: "1:00 PM - 3:30 PM",
+    description: "Set the stage on fire with your moves. Classical, Western, Folk or Freestyle - show us what you've got. (Afternoon)",
+    rules: "• Solo and group dance allowed\n• Group: 8-10 participants\n• Duration: As per event guidelines\n• Report 10 mins prior to event\n• Judge's decision is final",
+    date: "27/04/26",
+    time: "Afternoon",
     type: "Individual / Team",
     from: "#22d3ee",
     to: "#0891b2",
@@ -38,9 +41,10 @@ const EVENT_LIST = [
     title: "Mehandi",
     emoji: "🌿",
     Icon: Sparkles,
-    description: "Create intricate and beautiful henna designs. A test of creativity, speed, and precision.",
-    rules: "Time limit: 1 hour. Participants must bring their own cones.",
-    time: "10:30 AM - 11:30 AM",
+    description: "Create intricate and beautiful henna designs. A test of creativity, speed, and precision. (Morning)",
+    rules: "• Must bring your own model\n• Total time: 90 minutes\n• Bring own mehendi cones & materials\n• Pre-drawn outlines/stencils not permitted\n• Mobile phones strictly prohibited\n• Judge's decision is final",
+    date: "21/04/26",
+    time: "Morning",
     type: "Individual",
     from: "#ec4899",
     to: "#be185d",
@@ -48,13 +52,14 @@ const EVENT_LIST = [
     tag: "Art",
   },
   {
-    id: "makeup",
-    title: "Makeup",
+    id: "hair_and_makeover",
+    title: "Hair and Makeover Competition",
     emoji: "💄",
     Icon: Star,
-    description: "Transform faces into art. Show your styling and makeup prowess on live models.",
-    rules: "Time limit: 1.5 hours. Bring your own model and makeup kit.",
-    time: "12:00 PM - 1:30 PM",
+    description: "Create a complete beauty transformation with coordinated hair styling and makeover artistry on a live model. (Afternoon)",
+    rules: "• Bring your own makeup & accessories\n• Partner must follow dress code related to makeover theme\n• Natural hair only - no extensions\n• Total time: 2 hours\n• Report 10 mins prior to event\n• Judge's decision is final",
+    date: "24/04/26",
+    time: "Afternoon",
     type: "Individual",
     from: "#f59e0b",
     to: "#d97706",
@@ -62,27 +67,29 @@ const EVENT_LIST = [
     tag: "Style",
   },
   {
-    id: "hairstyle",
-    title: "Hairstyle",
+    id: "rangoli",
+    title: "Rangoli Competition",
     emoji: "✨",
     Icon: Zap,
-    description: "Weave magic with hair. Braids, updos, or avant-garde styles - let your imagination run wild.",
-    rules: "Time limit: 1 hour. Accessories allowed.",
-    time: "2:00 PM - 3:00 PM",
+    description: "Turn colors into celebration with vibrant rangoli designs that showcase symmetry, creativity, and festive flair. (Morning)",
+    rules: "Session: Morning. Participants must bring their own rangoli colors and materials.",
+    date: "22/04/26",
+    time: "Morning",
     type: "Individual",
     from: "#10b981",
     to: "#059669",
     glow: "rgba(16,185,129,0.4)",
-    tag: "Style",
+    tag: "Art",
   },
   {
     id: "cooking_without_fire",
     title: "Cooking Without Fire",
     emoji: "🍱",
     Icon: Trophy,
-    description: "Whip up delicious and presentable dishes without using any heat source.",
-    rules: "Time limit: 1 hour. Pre-cut ingredients allowed but no pre-cooked food.",
-    time: "3:00 PM - 4:00 PM",
+    description: "Whip up delicious and presentable dishes without using any heat source. (Afternoon)",
+    rules: "• Bring all ingredients & materials\n• Max 30% pre-preparation allowed\n• No cooking stoves/heating appliances\n• Total duration: 60 minutes\n• Report 10 mins prior to event\n• Judge's decision is final",
+    date: "23/04/26",
+    time: "Afternoon",
     type: "Individual / Team",
     from: "#f97316",
     to: "#ea580c",
@@ -94,9 +101,10 @@ const EVENT_LIST = [
     title: "Nail Art",
     emoji: "💅",
     Icon: Fingerprint,
-    description: "Express your artistry on tiny canvases. Design intricate, creative, and colorful nail art patterns that wow the judges.",
-    rules: "Time limit: 45 mins. All nail art supplies must be brought by the participant.",
-    time: "11:00 AM - 11:45 AM",
+    description: "Express your artistry on tiny canvases. Design intricate, creative, and colorful nail art patterns that wow the judges. (Morning)",
+    rules: "• Own hands or bring a model\n• Total time: 90 minutes\n• Bring own nail paints, brushes & tools\n• No artificial nails permitted\n• Must complete both hands\n• Work must be done during competition only\n• Pre-designed nails not allowed\n• Judge's decision is final",
+    date: "24/04/26",
+    time: "Morning",
     type: "Individual",
     from: "#f43f5e",
     to: "#e11d48",
@@ -108,9 +116,10 @@ const EVENT_LIST = [
     title: "Reels Competition",
     emoji: "🎬",
     Icon: Video,
-    description: "Create and present a short, engaging reel on stage. Showcase storytelling, editing skills, and creativity in under 60 seconds.",
-    rules: "Max 60 seconds. Must be original content. Reel to be submitted before the event day.",
-    time: "2:30 PM - 4:00 PM",
+    description: "Create and present a short, engaging reel on stage. Showcase storytelling, editing skills, and creativity in under 60 seconds. (Morning)",
+    rules: "• Each team: 3 members\n• Duration: 30-60 seconds\n• Topic provided by organizing team",
+    date: "23/04/26",
+    time: "Morning",
     type: "Individual / Team",
     from: "#8b5cf6",
     to: "#6d28d9",
@@ -122,9 +131,10 @@ const EVENT_LIST = [
     title: "Debate Competition",
     emoji: "🗣️",
     Icon: MessageSquare,
-    description: "Battle of minds and words. Argue your stance on thought-provoking topics. Fluency, reasoning, and confidence are key.",
-    rules: "2 speakers per team. 3 mins per side + 1 min rebuttal. Topics revealed 30 mins before.",
-    time: "10:00 AM - 1:00 PM",
+    description: "Battle of minds and words. Argue your stance on thought-provoking topics. Fluency, reasoning, and confidence are key. (Afternoon)",
+    rules: "Session: Afternoon. 2 speakers per team. Topics revealed 30 mins before.",
+    date: "22/04/26",
+    time: "Afternoon",
     type: "Team (2 members)",
     from: "#06b6d4",
     to: "#0891b2",
@@ -134,6 +144,8 @@ const EVENT_LIST = [
 ];
 
 export default function Events() {
+  const [selectedEvent, setSelectedEvent] = useState<typeof EVENT_LIST[0] | null>(null);
+
   return (
     <Layout>
       {/* Header */}
@@ -162,18 +174,19 @@ export default function Events() {
         </div>
       </section>
 
-      {/* Cards grid */}
+      {/* Cards grid with details modal */}
       <section className="pb-24">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {EVENT_LIST.map((event, i) => (
               <motion.div
                 key={event.id}
+                onClick={() => setSelectedEvent(event)}
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, type: "spring", stiffness: 80 }}
                 whileHover={{ y: -6 }}
-                className="group relative rounded-2xl overflow-hidden flex flex-col h-full"
+                className="group relative rounded-2xl overflow-hidden flex flex-col h-full cursor-pointer transition-all"
                 style={{ isolation: "isolate" }}
               >
                 {/* Animated gradient border */}
@@ -226,7 +239,7 @@ export default function Events() {
                   <div className="space-y-2 mb-6">
                     <div className="flex items-center gap-2.5 text-sm">
                       <Clock className="h-4 w-4" style={{ color: event.from }} />
-                      <span className="font-rajdhani text-white/70 font-medium">{event.time}</span>
+                      <span className="font-rajdhani text-white/70 font-medium">{event.date}</span>
                     </div>
                     <div className="flex items-center gap-2.5 text-sm">
                       <Users className="h-4 w-4" style={{ color: event.to }} />
@@ -250,6 +263,153 @@ export default function Events() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Event Details Modal */}
+      <AnimatePresence>
+        {selectedEvent && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedEvent(null)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            />
+
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              onClick={() => setSelectedEvent(null)}
+            >
+              <motion.div
+                onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-2xl rounded-2xl overflow-hidden"
+                style={{
+                  background: `linear-gradient(135deg, ${selectedEvent.from}15, ${selectedEvent.to}08)`,
+                  border: `2px solid ${selectedEvent.from}40`,
+                  boxShadow: `0 25px 50px -12px ${selectedEvent.glow}`
+                }}
+              >
+                {/* Close button */}
+                <button
+                  onClick={() => setSelectedEvent(null)}
+                  className="absolute top-6 right-6 z-10 p-2 rounded-lg transition-colors hover:bg-white/10"
+                >
+                  <X className="h-6 w-6 text-white" />
+                </button>
+
+                {/* Content */}
+                <div className="p-8">
+                  {/* Header */}
+                  <div className="mb-6 flex items-start gap-6">
+                    <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl shrink-0 shadow-lg"
+                      style={{ background: `linear-gradient(135deg, ${selectedEvent.from}30, ${selectedEvent.to}20)`, border: `1px solid ${selectedEvent.from}40` }}>
+                      {selectedEvent.emoji}
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="font-orbitron text-3xl font-bold text-white mb-3">{selectedEvent.title}</h2>
+                      <div className="flex gap-2 flex-wrap">
+                        <span className="font-rajdhani text-xs font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full border"
+                          style={{ color: selectedEvent.from, borderColor: `${selectedEvent.from}50`, background: `${selectedEvent.from}12` }}>
+                          {selectedEvent.tag}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Session Details */}
+                  <div className="space-y-4 mb-6 pb-6 border-b" style={{ borderColor: `${selectedEvent.from}25` }}>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="font-rajdhani text-xs uppercase tracking-widest text-muted-foreground mb-2">Session Date</p>
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-5 w-5" style={{ color: selectedEvent.from }} />
+                          <span className="font-rajdhani font-bold text-white">{selectedEvent.date}</span>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="font-rajdhani text-xs uppercase tracking-widest text-muted-foreground mb-2">Session Time</p>
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-5 w-5" style={{ color: selectedEvent.from }} />
+                          <span className="font-rajdhani font-bold text-white">{selectedEvent.time}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Team/Participation Info */}
+                  <div className="mb-6">
+                    <p className="font-rajdhani text-xs uppercase tracking-widest text-muted-foreground mb-2">Participation</p>
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg w-fit"
+                      style={{ background: `${selectedEvent.from}12`, borderLeft: `3px solid ${selectedEvent.from}` }}>
+                      <Users className="h-4 w-4" style={{ color: selectedEvent.from }} />
+                      <span className="font-rajdhani font-medium text-white">{selectedEvent.type}</span>
+                    </div>
+                  </div>
+
+                  {/* Rules */}
+                  <div className="mb-6">
+                    <p className="font-rajdhani text-xs uppercase tracking-widest text-muted-foreground mb-3">Competition Rules</p>
+                    <div className="space-y-2 px-4 py-3 rounded-lg" style={{ background: `${selectedEvent.from}0a`, border: `1px solid ${selectedEvent.from}25` }}>
+                      {selectedEvent.rules.split('\n').map((rule, idx) => (
+                        rule.trim() && (
+                          <div key={idx} className="flex gap-2 text-sm">
+                            <span className="font-bold shrink-0" style={{ color: selectedEvent.from }}>•</span>
+                            <span className="font-rajdhani text-white/80 leading-relaxed">{rule.trim()}</span>
+                          </div>
+                        )
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA */}
+                  <Button
+                    asChild
+                    className="w-full rounded-xl font-rajdhani font-bold tracking-wider text-white border-0 h-12"
+                    style={{
+                      background: `linear-gradient(135deg, ${selectedEvent.from}, ${selectedEvent.to})`,
+                    }}
+                  >
+                    <Link href={`/register?event=${selectedEvent.id}`}>
+                      Register Now <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Footer */}
+      <section className="relative border-t border-white/10 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 py-12">
+        <div className="container mx-auto px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <p className="font-rajdhani text-sm text-muted-foreground mb-2">Cultural Secretary</p>
+            <h3 className="font-orbitron text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
+              Chetan Suresh Ballary
+            </h3>
+            <div className="flex items-center justify-center gap-6 mb-4">
+              <a href="https://chezresume.netlify.app" target="_blank" rel="noopener noreferrer" className="font-rajdhani text-xs text-primary hover:text-white transition-colors">
+                Portfolio
+              </a>
+              <a href="https://www.linkedin.com/in/chetan-suresh-ballary-136188326/" target="_blank" rel="noopener noreferrer" className="font-rajdhani text-xs text-blue-400 hover:text-white transition-colors">
+                LinkedIn
+              </a>
+            </div>
+            <p className="font-rajdhani text-xs text-muted-foreground/70">REC INNOVA 2K26</p>
+          </motion.div>
         </div>
       </section>
     </Layout>

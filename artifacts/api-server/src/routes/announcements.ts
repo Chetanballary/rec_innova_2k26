@@ -1,10 +1,12 @@
 import { Router, type IRouter } from "express";
-import { db, announcementsTable, insertAnnouncementSchema } from "@workspace/db";
+import { getDb, announcementsTable, insertAnnouncementSchema } from "@workspace/db";
 import { eq } from "drizzle-orm";
+import { requireAdmin } from "../lib/adminAuth";
 
 const router: IRouter = Router();
 
 router.get("/announcements", async (req, res) => {
+  const db = getDb();
   const announcements = await db
     .select()
     .from(announcementsTable)
@@ -23,6 +25,14 @@ router.get("/announcements", async (req, res) => {
 });
 
 router.post("/announcements", async (req, res) => {
+  const db = getDb();
+  // Admin only
+  let ok = false;
+  requireAdmin(req, res, () => {
+    ok = true;
+  });
+  if (!ok) return;
+
   const parsed = insertAnnouncementSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(422).json({ error: "Validation failed", message: parsed.error.message });
@@ -46,6 +56,13 @@ router.post("/announcements", async (req, res) => {
 });
 
 router.put("/announcements/:id", async (req, res) => {
+  const db = getDb();
+  let ok = false;
+  requireAdmin(req, res, () => {
+    ok = true;
+  });
+  if (!ok) return;
+
   const id = parseInt(req.params.id);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -81,6 +98,13 @@ router.put("/announcements/:id", async (req, res) => {
 });
 
 router.delete("/announcements/:id", async (req, res) => {
+  const db = getDb();
+  let ok = false;
+  requireAdmin(req, res, () => {
+    ok = true;
+  });
+  if (!ok) return;
+
   const id = parseInt(req.params.id);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
